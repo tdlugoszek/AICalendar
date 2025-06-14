@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
@@ -15,6 +15,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AICalendar.ServiceDefaults\AICalendar.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\AICalendar.ApiService\AICalendar.ApiService.csproj" />
+    <ProjectReference Include="..\AICalendar.AppService\AICalendar.AppService.csproj" />
+    <ProjectReference Include="..\AICalendar.MCPServer\AICalendar.MCPServer.csproj" />
+    <ProjectReference Include="..\AICalendar.Web\AICalendar.Web.csproj" />
+    <ProjectReference Include="..\AICalendar.WebApp\AICalendar.WebApp.csproj" />
   </ItemGroup>
 
 </Project>
