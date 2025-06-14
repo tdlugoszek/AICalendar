@@ -1,0 +1,6 @@
+@AICalendar.MCPServer_HostAddress = http://localhost:5291
+
+GET {{AICalendar.MCPServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
