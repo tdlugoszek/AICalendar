@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AICalendar.Shared.Models
 {
-    internal class ChatMessage
+    public class ChatMessage
     {
         public string Content { get; set; } = string.Empty;
         public bool IsFromUser { get; set; }
@@ -15,7 +15,7 @@ namespace AICalendar.Shared.Models
         public string? EventData { get; set; }
     }
 
-    internal class ChatRequest
+    public class ChatRequest
     {
         public string Message { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
