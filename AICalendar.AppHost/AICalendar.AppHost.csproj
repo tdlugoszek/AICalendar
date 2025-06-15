@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AICalendar.ServiceDefaults\AICalendar.ServiceDefaults.csproj" />
     <ProjectReference Include="..\AICalendar.ApiService\AICalendar.ApiService.csproj" />
     <ProjectReference Include="..\AICalendar.AppService\AICalendar.AppService.csproj" />
     <ProjectReference Include="..\AICalendar.MCPServer\AICalendar.MCPServer.csproj" />
