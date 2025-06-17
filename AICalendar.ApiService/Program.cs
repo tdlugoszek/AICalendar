@@ -1,41 +1,61 @@
+using AICalendar.ApiService.Application.AI;
+//using AICalendar.ApiService.Application.Events;
+//using AICalendar.ApiService.Application.User;
+using AICalendar.ApiService.Infrastructure.Database;
+using AICalendar.ApiService.Infrastructure.Extensions;
+using AICalendar.ApiService.Services;
+using AICalendar.ServiceDefaults;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+using AICalendar.Shared.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddServiceDefaults();
+//builder.AddSqlServerDbContext<AiCalendarDbContext>("database");
 
+builder.Services.AddDbContext<CalendarDbContext>(options =>
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite("Data Source=calendar.db"));
+
+builder.Services.AddScoped<IEventService, EventService>();
+
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+//builder.Services.AddProblemDetails();
+//builder.Services.AddUsers();
+//builder.Services.AddEvents();
+
+
+await builder.AddAi(builder.Configuration.GetSection("Ai").Get<AiSettings>());
+builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddControllers();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+app.MapAiRoutes();
+//app.UseAuthorization();
+app.MapControllers();
+await app.RunAsync();
